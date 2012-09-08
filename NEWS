@@ -1,0 +1,38 @@
+Brutal Chess 0.5.2:
+- Fixed bug that allowed white pawns to move backwards
+- Fixed minor bug where a few moves weren't generated in one case
+- Small optimizations of the AI when evaluating the board
+- Modified installer to work on pre Windows XP systems
+
+Brutal Chess Alpha 0.5.1:
+
+- Fixed colors of the board squares
+- Fixed bug that allowed castling when it shouldn't have been legal
+- Added proper Linux install scripts
+
+
+Brutal Chess Alpha 0.5:
+
+- Completely new code base
+- Menu system to replace console
+- Select pawn promotion piece through new interface
+- Variable AI difficulty
+- New loading screen
+- Shadows and other graphical tweaks
+- Full rotation of the camera
+- History arrows displaying previous move
+- MD3 (Quake 3) model support
+
+
+Brutal Chess Alpha 0.3:
+
+- Much improved AI
+- Reflections, textures, and other graphical improvements
+- Commands can be typed into the console (only one command in this release)
+- Selected piece can be dropped by right clicking
+- Piece move animations improved
+
+
+Brutal Chess Alpha 0.1:
+
+- First public release

@@ -1,0 +1,27 @@
+Linux:
+
+To build Brutal Chess on Linux, you will need recent version of SDL, SDL_Image,
+and FreeType. SDL 1.2.7 and FreeType 2.1.9 are known to work. The first thing
+to do is run ./configure. This should autogenerate a Makefile if you have all
+the necassary dependencies installed. If this failed for some reason look at
+the output and install any missing libraries. This can sometimes be difficult
+to figure out so if you have problems please provide us with feedback so that
+we can provide more complete documentation. After you have a Makefile simply
+type make and that will build the binary in the src directory.  Finally you can
+run 'make install' as root user to install Brutal Chess for all users on the
+system. You can delete the build directory after install if you choose to do so.
+
+Note to Debian Users:
+Make sure that you have development versions of Xmu and Xi libraries installed
+or the autogeneration of the Makefile will fail when trying to verify that you
+have SDL installed. On Ubuntu the needed packages are libxmu-dev and libxi-dev.
+
+
+Windows:
+
+To build Brutal Chess on Windows, Microsoft Visual Studio .NET 2005 is
+recommended. Building under other compilers may be possible, but hasn't been
+tested. In addition, the FreeType, SDL, and SDL_Image  development libraries
+must be installed. Open brutalchess.sln and build Brutal Chess to make the
+executable.
+

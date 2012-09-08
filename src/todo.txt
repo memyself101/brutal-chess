@@ -1,0 +1,63 @@
+#==========================================================================#
+#   Alpha 0.5 Release                                                      #  
+#==========================================================================#
+
+    [X] Menu Mouse Selection
+    [X] Menu Item Animations
+    [X] Pawn Promotion
+		Interfaces
+    [X] Stalemate
+    [ ] Move History
+    [ ] Menu Interface
+		Sync to command-line arguments
+		Game Menu:
+			Piece set
+			Board theme
+			Arrows
+			-
+			Back
+
+		New game menu:
+			White player
+			Black player
+			Color
+			Create Game
+			-
+			Back
+
+    [ ] Move Animations
+    [X] End Game Handling
+    [X] Internal AI
+    [X] Windows Installer
+    [X] Update the docs
+    [ ] Release To Public - w00t
+
+Sooner
+======
+ERROR CHECKING
+new basename and dirname for windows
+an AI
+check mate search
+pawn promotion
+	make sure this works with xboard as well
+50 move count
+menu system
+	make the menu look pretty	
+new model set
+new board theme
+fix comments in boardposition.h
+get RPM and ebuild
+clean up md3 code
+
+or Later
+========
+make different shapes for debug set
+make sure everything has doxygen comments
+shadow buffering for better shadows
+sound fx
+netcode
+more models
+move undo
+game playback
+optimization
+try porting other AIs to BC i.e. Crafty, Faile
