@@ -72,7 +72,7 @@ void quit( int returnCode )
 	exit( returnCode );
 }
 
-int initGL();
+int initGL( void );
 // function to reset our viewport after a window resize
 int resizeWindow( int width, int height )
 {
@@ -108,7 +108,7 @@ int resizeWindow( int width, int height )
 
 
 // general OpenGL initialization function
-int initGL()
+int initGL( void )
 {
 	cout << "Initializing OpenGL" << endl;
 	// Enable smooth shading

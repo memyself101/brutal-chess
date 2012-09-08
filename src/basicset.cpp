@@ -6,6 +6,7 @@
  * Authors : Mike Cook, Joe Flint, Neil Pankey
  **************************************************************************/
 
+#include "config.h"
 #include "pieceset.h"
 #include "SDL_opengl.h"
 

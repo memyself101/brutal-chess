@@ -70,10 +70,10 @@ AC_CHECK_LIB(SDL_image,
 #AC_CHECK_FUNCS([sqrt])
 
 # Directory where resources are installed
-AC_SUBST(prefixdir, "${datadir}/brutalchess/", "Prefix")
-AC_SUBST(modelsdir, "${datadir}/brutalchess/models/", "Models")
-AC_SUBST(artdir, "${datadir}/brutalchess/art/", "Art")
-AC_SUBST(fontsdir, "${datadir}/brutalchess/fonts/", "Fonts")
+AC_SUBST(bcdatadir, "${datadir}/brutalchess/", "Prefix")
+AC_SUBST(modelsdir, "${bcdatadir}/models/", "Models")
+AC_SUBST(artdir, "${bcdatadir}/art/", "Art")
+AC_SUBST(fontsdir, "${bcdatadir}/fonts/", "Fonts")
 
 AC_CONFIG_FILES([Makefile 
 			src/Makefile

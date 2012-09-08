@@ -120,7 +120,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;ART_DIR=\&quot;\&quot;;MODELS_DIR=\&quot;\&quot;;PREFIX_DIR=\&quot;\&quot;;FONTS_DIR=\&quot;\&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -346,6 +346,10 @@
 			</File>
 			<File
 				RelativePath=".\src\chessplayers.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\config.h"
 				>
 			</File>
 			<File

@@ -27,7 +27,8 @@
 
 #include "SDL.h"
 #include "SDL_opengl.h"
-#include "objfile.h"
+#include "q3charmodel.h"
+#include "vector.h"
 #include "texture.h"
 
 using namespace std;
@@ -37,7 +38,7 @@ using namespace std;
 #define SCREEN_HEIGHT 480
 #define SCREEN_BPP     16
 
-#define WINDOW_TITLE "objview $Revision: 1.1.2.3 $"
+#define WINDOW_TITLE "md3view"
 
 /* This is our SDL surface */
 SDL_Surface *surface;
@@ -59,8 +60,6 @@ int mousedeltax = 0, mousedeltay = 0;
 //Float to store fps count
 GLfloat fps = 0;
 
-ObjFile obj;
-
 void Quit(int);
 
 /* function to release/destroy our resources and restoring the old desktop */
@@ -73,7 +72,7 @@ void quit( int returnCode )
 	exit( returnCode );
 }
 
-int initGL( void );
+int initGL();
 // function to reset our viewport after a window resize
 int resizeWindow( int width, int height )
 {
@@ -95,7 +94,7 @@ int resizeWindow( int width, int height )
 	glLoadIdentity( );
 
 	// Set our perspective
-	gluPerspective( 45.0f, ratio, 20.0f, 100.0f );
+	gluPerspective( 45.0f, ratio, 20.0f, 150.0f );
 
 	// Make sure we're chaning the model view and not the projection
 	glMatrixMode( GL_MODELVIEW );
@@ -109,7 +108,7 @@ int resizeWindow( int width, int height )
 
 
 // general OpenGL initialization function
-int initGL( void )
+int initGL()
 {
 	cout << "Initializing OpenGL" << endl;
 	// Enable smooth shading
@@ -153,12 +152,12 @@ int initGL( void )
 	glMaterialfv(GL_FRONT, GL_SPECULAR, specularmat);
 	glMaterialf(GL_FRONT, GL_SHININESS, 128);
 
-	
 	return( true );
 }
 
 // Here goes our drawing code
-int drawGLScene( void )
+int drawGLScene( Q3CharModel* md3, Q3CharModel::Q3AnimState u, 
+		Q3CharModel::Q3AnimState l)
 {
 	// These are to calculate our fps
 	static GLint T0     = 0;
@@ -261,7 +260,20 @@ int drawGLScene( void )
 	if( b > 0 && keys[SDLK_v] )
 		b -= 0.001;
 
-	obj.draw();
+	glScalef(1/10.0, 1/10.0, 1/10.0);
+	glDisable(GL_TEXTURE_2D);
+	glColor3d(1.0, 1.0, 1.0);
+	glBegin(GL_QUADS);
+		glNormal3f(0, 1, 0);
+		glVertex3f(150, 0, 150);
+		glVertex3f(150, 0, -150);
+		glVertex3f(-150, 0, -150);
+		glVertex3f(-150, 0, 150);
+	glEnd();
+	glEnable(GL_TEXTURE_2D);
+	md3->draw(u, l);
+
+	
 	/*glTranslatef( -3.5*0.6, 0, -1.5*0.6 );
 	for( int j = 0; j < 4; j++ ) {
 		for( int i = 0; i < 8; i++ ) {
@@ -281,13 +293,7 @@ int drawGLScene( void )
 		mousedeltax = 0;
 	}
 
-	if( keys[SDLK_UP] )
-		zoom += 0.05;
-	
-	if( keys[SDLK_DOWN] )
-		zoom -= 0.05;
-
-
+		
 	// Draw it to the screen
 	SDL_GL_SwapBuffers( );
 
@@ -314,30 +320,10 @@ int main( int argc, char **argv )
 		args[x]=argv[x];
 
 	if( argc < 2 ) {
-		cout << "Please give an obj file to load" << endl;
+		cout << "Please give a model to load" << endl;
 		return 1;
 	}
-	
-	bool usetext = false;
-	Texture tex;
-	if( argc > 2 ) {
-		if(!tex.load(args[2])) {
-			cout << "Failed to load " << args[2] << endl;
-			return 3;
-		} else {
-			usetext = true;
-			obj.enableTexture();
-		}
-	}
 
-	
-	if( !obj.load( args[1].c_str() ) ) {
-		cout << "Failed to load " << args[1] << endl;
-		return 2;
-	}
-
-
-	obj.findNorms();
 	
 	// Flags to pass to SDL_SetVideoMode
     	int videoFlags;
@@ -408,17 +394,48 @@ int main( int argc, char **argv )
 	// wait for events
 	int frameCount = 0;
 
-	if(usetext) {
-		glEnable(GL_TEXTURE_2D);
-		tex.loadGL();
-		tex.use();
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		cout << "Texturing" << endl;
-	}
+	Q3CharModel q;
+	q.load(args[1]);
+	q.loadGL();
 
-	obj.build();
+	vector<Q3CharModel::Q3AnimState> bothAnims;
+	vector<Q3CharModel::Q3AnimState> upperAnims;
+	vector<Q3CharModel::Q3AnimState> lowerAnims;
 
+	bothAnims.push_back(q.getLowerAnimation("BOTH_DEATH1"));
+	bothAnims.push_back(q.getLowerAnimation("BOTH_DEAD1"));
+	bothAnims.push_back(q.getLowerAnimation("BOTH_DEATH2"));
+	bothAnims.push_back(q.getLowerAnimation("BOTH_DEAD2"));
+	bothAnims.push_back(q.getLowerAnimation("BOTH_DEATH3"));
+	bothAnims.push_back(q.getLowerAnimation("BOTH_DEAD3"));
+
+	lowerAnims.push_back(q.getLowerAnimation("LEGS_IDLE"));
+	lowerAnims.push_back(q.getLowerAnimation("LEGS_WALK"));
+	lowerAnims.push_back(q.getLowerAnimation("LEGS_RUN"));
+	lowerAnims.push_back(q.getLowerAnimation("LEGS_BACK"));
+	lowerAnims.push_back(q.getLowerAnimation("LEGS_TURN"));
+	lowerAnims.push_back(q.getLowerAnimation("LEGS_WALKCR"));
+	lowerAnims.push_back(q.getLowerAnimation("LEGS_IDLECR"));
+	lowerAnims.push_back(q.getLowerAnimation("LEGS_SWIM"));
+	lowerAnims.push_back(q.getLowerAnimation("LEGS_JUMP"));
+	lowerAnims.push_back(q.getLowerAnimation("LEGS_LAND"));
+	lowerAnims.push_back(q.getLowerAnimation("LEGS_JUMPB"));
+	lowerAnims.push_back(q.getLowerAnimation("LEGS_LANDB"));
+	
+	upperAnims.push_back(q.getUpperAnimation("TORSO_STAND1"));
+	upperAnims.push_back(q.getUpperAnimation("TORSO_STAND2"));
+	upperAnims.push_back(q.getUpperAnimation("TORSO_ATTACK1"));
+	upperAnims.push_back(q.getUpperAnimation("TORSO_ATTACK2"));
+	upperAnims.push_back(q.getUpperAnimation("TORSO_DROP"));
+	upperAnims.push_back(q.getUpperAnimation("TORSO_RAISE"));
+	upperAnims.push_back(q.getUpperAnimation("TORSO_GESTURE"));
+
+	bool both = true;
+
+	vector<Q3CharModel::Q3AnimState>::iterator ailower = lowerAnims.begin();
+	vector<Q3CharModel::Q3AnimState>::iterator aiupper = upperAnims.begin();
+	vector<Q3CharModel::Q3AnimState>::iterator aiboth = bothAnims.begin();
+	
 	while ( !done )
 	{
 	
@@ -480,18 +497,8 @@ int main( int argc, char **argv )
 				    		cerr << "Could not get a surface after resize: " << SDL_GetError( ) << endl;
 						quit( 1 );
 					}
-					obj.unbuild();
-					if(usetext)
-						tex.unloadGL();
-			    	resizeWindow( event.resize.w, event.resize.h );
-					if(usetext) {
-						tex.loadGL();
-						glEnable(GL_TEXTURE_2D);
-						glEnable(GL_BLEND);
-						glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-						tex.use();
-					}
-					obj.build();
+			    		resizeWindow( event.resize.w, 
+							event.resize.h );
 					width = event.resize.w;
 					height = event.resize.h;
 					break;
@@ -499,6 +506,41 @@ int main( int argc, char **argv )
 					keys[ event.key.keysym.sym ] = true;
 					// handle key presses
 					//handleKeyPress( &event.key.keysym );
+					if (event.key.keysym.sym == SDLK_UP) {
+						if(both) {
+							aiboth++;
+							if(aiboth == bothAnims.end()) {
+								both = false;
+								cout << "Both off" << endl;
+								aiupper = upperAnims.begin();
+								ailower = lowerAnims.begin();
+							}
+						} else {
+							aiupper++;
+							if(aiupper == upperAnims.end()) {
+								both = true;
+								cout << "Both on" << endl;
+								aiboth = bothAnims.begin();
+							}
+						}
+					} else if (event.key.keysym.sym == SDLK_DOWN) {
+						if(both) {
+							aiboth++;
+							if(aiboth == bothAnims.end()) {
+								both = false;
+								cout << "Both off" << endl;
+								aiupper = upperAnims.begin();
+								ailower = lowerAnims.begin();
+							}
+						} else {
+							ailower++;
+							if(ailower == lowerAnims.end()) {
+								both = true;
+								cout << "Both on" << endl;
+								aiboth = bothAnims.begin();
+							}
+						}
+					}
 					break;
 				case SDL_KEYUP:
 					keys[ event.key.keysym.sym ] = false;
@@ -519,8 +561,16 @@ int main( int argc, char **argv )
 			SDL_WM_ToggleFullScreen( surface );
 			keys[SDLK_F1]=false;
 		}
-		if ( isActive )
-			drawGLScene( );
+		if ( isActive ) {
+			if(both) {
+				q.updateAnim(*aiboth);
+				drawGLScene(&q, *aiboth, *aiboth);
+			} else {
+				q.updateAnim(*aiupper);
+				q.updateAnim(*ailower);
+				drawGLScene(&q, *aiupper, *ailower);
+			}
+		}
 	}
 
 	/* clean ourselves up and exit */

@@ -46,7 +46,7 @@ objview_SOURCES = 	objfile.cpp \
 			texture.cpp \
 			vector.cpp
 
-INCLUDES = -DPREFIX_DIR=\"$(prefixdir)\" \
+INCLUDES = -DPREFIX_DIR=\"$(bcdatadir)\" \
 	  -DMODELS_DIR=\"$(modelsdir)\" \
 	  -DART_DIR=\"$(artdir)\" \
 	  -DFONTS_DIR=\"$(fontsdir)\"

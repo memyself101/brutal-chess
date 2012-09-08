@@ -10,6 +10,7 @@
 #include <string>
 
 #include "boardtheme.h"
+#include "config.h"
 #include "SDL_opengl.h"
 #include "texture.h"
 

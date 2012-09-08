@@ -29,7 +29,7 @@
 
   Var MUI_TEMP
   Var STARTMENU_FOLDER
-  Var WIN_VERSION
+;  Var WIN_VERSION
 
 
 ;--------------------------------
@@ -93,23 +93,26 @@ Section "Dummy Section" SecDummy
   
   ;Make sure the installer works on Win98+
   ;Check for NT based system
-  ReadRegStr $WIN_VERSION HKLM "SOFTWARE\Microsoft\Windows NT\CurrentVersion" CurrentVersion
+;  ReadRegStr $WIN_VERSION HKLM "SOFTWARE\Microsoft\Windows NT\CurrentVersion" CurrentVersion
+
+  ;Pre NT systems didn't have SxS assemblies
+;  IfErrors lbl_SxS_no
 
   ;Windows XP, 2003, and Vista are only versions with SxS support 
-  StrCmp $WIN_VERSION '5.1' lbl_SxS_yes ;XP
-  StrCmp $WIN_VERSION '5.2' lbl_SxS_yes ;2003
-  StrCmp $WIN_VERSION '6.0' lbl_SxS_yes ;Vista
+;  StrCmp $WIN_VERSION '5.1' lbl_SxS_yes ;XP
+;  StrCmp $WIN_VERSION '5.2' lbl_SxS_yes ;2003
+;  StrCmp $WIN_VERSION '6.0' lbl_SxS_yes ;Vista
 
-  lbl_SxS_no:
+;  lbl_SxS_no:
   SetOutPath "$INSTDIR\bin\"
-  Goto lbl_cpy_dll
+;  Goto lbl_cpy_dll
 
-  lbl_SxS_yes:
-  SetOutPath "$INSTDIR\bin\Microsoft.VC80.CRT"
-  File "C:\Program Files\Microsoft Visual Studio 8\VC\redist\x86\Microsoft.VC80.CRT\Microsoft.VC80.CRT.manifest"
+;  lbl_SxS_yes:
+;  SetOutPath "$INSTDIR\bin\Microsoft.VC80.CRT"
+;  File "C:\Program Files\Microsoft Visual Studio 8\VC\redist\x86\Microsoft.VC80.CRT\Microsoft.VC80.CRT.manifest"
 
   ;Copy the dlls to the system specific directory already set
-  lbl_cpy_dll:
+;  lbl_cpy_dll:
   File "C:\Program Files\Microsoft Visual Studio 8\VC\redist\x86\Microsoft.VC80.CRT\msvcm80.dll"
   File "C:\Program Files\Microsoft Visual Studio 8\VC\redist\x86\Microsoft.VC80.CRT\msvcp80.dll"
   File "C:\Program Files\Microsoft Visual Studio 8\VC\redist\x86\Microsoft.VC80.CRT\msvcr80.dll"
@@ -144,7 +147,6 @@ Section "Dummy Section" SecDummy
   SetOutPath "$INSTDIR"
 
   ;Install all the docs
-  File /oname=AUTHORS.txt "AUTHORS"
   File /oname=ChangeLog.txt "ChangeLog"
   File /oname=LICENSE.txt "COPYING"
   File /oname=NEWS.txt "NEWS"
@@ -192,10 +194,10 @@ Section "Uninstall"
   Delete "$INSTDIR\bin\msvcp80.dll"
   Delete "$INSTDIR\bin\msvcr80.dll"
 
-  Delete "$INSTDIR\bin\Microsoft.VC80.CRT\Microsoft.VC80.CRT.manifest"
-  Delete "$INSTDIR\bin\Microsoft.VC80.CRT\msvcm80.dll"
-  Delete "$INSTDIR\bin\Microsoft.VC80.CRT\msvcp80.dll"
-  Delete "$INSTDIR\bin\Microsoft.VC80.CRT\msvcr80.dll"
+;  Delete "$INSTDIR\bin\Microsoft.VC80.CRT\Microsoft.VC80.CRT.manifest"
+;  Delete "$INSTDIR\bin\Microsoft.VC80.CRT\msvcm80.dll"
+;  Delete "$INSTDIR\bin\Microsoft.VC80.CRT\msvcp80.dll"
+;  Delete "$INSTDIR\bin\Microsoft.VC80.CRT\msvcr80.dll"
 
   Delete "$INSTDIR\models\pawn.obj"
   Delete "$INSTDIR\models\rook.obj"
@@ -210,7 +212,6 @@ Section "Uninstall"
 
   Delete "$INSTDIR\fonts\ZEROES__.TTF"
 
-  Delete "$INSTDIR\AUTHORS.txt"
   Delete "$INSTDIR\ChangeLog.txt"
   Delete "$INSTDIR\LICENSE.txt"
   Delete "$INSTDIR\NEWS.txt"
@@ -218,7 +219,7 @@ Section "Uninstall"
 
   Delete "$INSTDIR\Uninstall.exe"
 
-  RMDir "$INSTDIR\bin\Microsoft.VC80.CRT"
+;  RMDir "$INSTDIR\bin\Microsoft.VC80.CRT\"
   RMDir "$INSTDIR\bin"
   RMDir "$INSTDIR\art"
   RMDir "$INSTDIR\fonts"

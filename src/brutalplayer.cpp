@@ -12,6 +12,7 @@
 
 #include <vector>
 #include <time.h>
+#include <climits>
 
 using namespace std;
 
