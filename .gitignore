@@ -1,0 +1,17 @@
+/aclocal.m4
+/autom4te.cache
+/config.log
+/config.status
+/configure
+/install-sh
+/missing
+
+Makefile
+Makefile.in
+brutalchess
+md3view
+objview
+stamp-h1
+.deps
+*.o
+.*.swp
